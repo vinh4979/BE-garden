@@ -1,0 +1,47 @@
+name: bzing-garden
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: garden-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: bzing
+      POSTGRES_PASSWORD: '0000'
+      POSTGRES_DB: garden
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bzing -d garden']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: garden-rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: bzing
+      RABBITMQ_DEFAULT_PASS: '0000'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+  backend:
+    build: .
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    env_file:
+      - .env
+    ports:
+      - '8080:8080'
+
+volumes:
+  postgres_data:
