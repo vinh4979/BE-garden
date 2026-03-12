@@ -1,9 +1,9 @@
-name: bzing-garden
+name: garden-iot
 
 services:
   postgres:
     image: postgres:15
-    container_name: garden-postgres
+    container_name: garden-iot-postgres
     restart: always
     environment:
       POSTGRES_USER: bzing
@@ -21,7 +21,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: garden-rabbitmq
+    container_name: garden-iot-rabbitmq
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: bzing
@@ -31,7 +31,8 @@ services:
       - '15672:15672'
 
   backend:
-    build: .
+    image: vinh4979/garden-iot-backend:latest
+    container_name: garden-iot-backend
     restart: on-failure
     depends_on:
       postgres:
