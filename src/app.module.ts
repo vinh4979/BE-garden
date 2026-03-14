@@ -7,7 +7,6 @@ import { SharedModule } from './modules/shared/shared.module';
 import { ConfigModule } from '@nestjs/config';
 import { validateEnv } from './config/env.validate';
 import { AppLoggerService } from './modules/shared/logger.service';
-import { TestModule } from './modules/test/test.module';
 import { MqttModule } from './modules/mqtt/mqtt.module';
 import { RabbitMQModule } from './modules/rabbitmq/rabbitmq.module';
 
@@ -24,7 +23,6 @@ import { RabbitMQModule } from './modules/rabbitmq/rabbitmq.module';
     AuthModule,
     UsersModule,
     SharedModule,
-    TestModule,
     MqttModule,
     RabbitMQModule,
   ],
